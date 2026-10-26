@@ -38,7 +38,34 @@ test.describe('TC-01 Баннер', () => {
 // TC-02 · ШАПКА САЙТА · ветка: feat/tc-02-header
 // ================================================================
 test.describe('TC-02 Шапка сайта', () => {
-  // TODO: участник TC-02 пишет свои тесты здесь
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+  });
+
+  test('верхнее меню: пункты кликабельны', async ({ page }) => {
+    for (const name of ['О нас', 'Доставка', 'Контакты']) {
+      const link = page.locator(header.topMenuLink(name)).first();
+      await expect(link).toBeVisible();
+      await expect(link).toHaveAttribute('href', /.+/);
+    }
+  });
+
+  test('телефон использует tel:', async ({ page }) => {
+    const phone = page.locator(header.phone).first();
+    await expect(phone).toHaveAttribute('href', /^tel:/);
+  });
+
+  test('соцсети ведут на корректные ресурсы', async ({ page }) => {
+    const expected: Record<string, RegExp> = {
+      VK: /vk\.com/,
+      YouTube: /youtube\.com/,
+      Telegram: /t\.me|telegram/,
+    };
+    for (const [name, pattern] of Object.entries(expected)) {
+      const link = page.locator(header.social(name as any)).first();
+      await expect(link).toHaveAttribute('href', pattern);
+    }
+  });
 });
 
 // ================================================================
