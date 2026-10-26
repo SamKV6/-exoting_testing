@@ -14,11 +14,24 @@ import {
 // TC-01 · БАННЕР · ветка: feat/tc-01-banner
 // ================================================================
 test.describe('TC-01 Баннер', () => {
-    test('текст объявления отображается', async ({ page }) => {
+  test('текст объявления отображается', async ({ page }) => {
     await page.goto('/');
     const el = page.locator(banner.root);
     await expect(el).toBeVisible();
     await expect(el).toContainText(banner.text);
+  });
+
+  for (const width of [375, 768, 1920]) {
+    test(`вёрстка не ломается при ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto('/');
+      await expect(page.locator(banner.root)).toBeVisible();
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+      );
+      expect(overflow).toBeFalsy();
+    });
+  }
 });
 
 // ================================================================
