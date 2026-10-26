@@ -14,7 +14,11 @@ import {
 // TC-01 · БАННЕР · ветка: feat/tc-01-banner
 // ================================================================
 test.describe('TC-01 Баннер', () => {
-  // TODO: участник TC-01 пишет свои тесты здесь
+    test('текст объявления отображается', async ({ page }) => {
+    await page.goto('/');
+    const el = page.locator(banner.root);
+    await expect(el).toBeVisible();
+    await expect(el).toContainText(banner.text);
 });
 
 // ================================================================
