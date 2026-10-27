@@ -2,9 +2,6 @@ import { test, expect } from '@playwright/test';
 import {
   banner,
   header,
-  search,
-  cart,
-  favorites,
   sorting,
   product,
   chat,
@@ -14,29 +11,63 @@ import {
 // TC-01 · БАННЕР · ветка: feat/tc-01-banner
 // ================================================================
 test.describe('TC-01 Баннер', () => {
-  // TODO: участник TC-01 пишет свои тесты здесь
+  test('текст объявления отображается', async ({ page }) => {
+    await page.goto('/');
+    const el = page.locator(banner.root);
+    await expect(el).toBeVisible();
+    await expect(el).toContainText(banner.text);
+  });
+
+  for (const width of [375, 768, 1920]) {
+    test(`вёрстка не ломается при ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto('/');
+      await expect(page.locator(banner.root)).toBeVisible();
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+      );
+      expect(overflow).toBeFalsy();
+    });
+  }
 });
 
 // ================================================================
 // TC-02 · ШАПКА САЙТА · ветка: feat/tc-02-header
 // ================================================================
 test.describe('TC-02 Шапка сайта', () => {
-  // TODO: участник TC-02 пишет свои тесты здесь
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+  });
+
+  test('верхнее меню: пункты кликабельны', async ({ page }) => {
+    for (const name of ['О нас', 'Доставка', 'Контакты']) {
+      const link = page.locator(header.topMenuLink(name)).first();
+      await expect(link).toBeVisible();
+      await expect(link).toHaveAttribute('href', /.+/);
+    }
+  });
+
+  test('телефон использует tel:', async ({ page }) => {
+    const phone = page.locator(header.phone).first();
+    await expect(phone).toHaveAttribute('href', /^tel:/);
+  });
+
+  test('соцсети ведут на корректные ресурсы', async ({ page }) => {
+    const expected: Record<string, RegExp> = {
+      VK: /vk\.com/,
+      YouTube: /youtube\.com/,
+      Telegram: /t\.me|telegram/,
+    };
+    for (const [name, pattern] of Object.entries(expected)) {
+      const link = page.locator(header.social(name as any)).first();
+      await expect(link).toHaveAttribute('href', pattern);
+    }
+  });
 });
 
 // ================================================================
-// TC-03 · ПОИСК · ветка: feat/tc-03-search
+// TC-03 и TC-04 — перенесены в tests/search-cart.spec.ts
 // ================================================================
-test.describe('TC-03 Поиск', () => {
-  // TODO: участник TC-03 пишет свои тесты здесь
-});
-
-// ================================================================
-// TC-04 · КОРЗИНА И ИЗБРАННОЕ · ветка: feat/tc-04-cart
-// ================================================================
-test.describe('TC-04 Корзина и избранное', () => {
-  // TODO: участник TC-04 пишет свои тесты здесь
-});
 
 // ================================================================
 // TC-05 · СОРТИРОВКА · ветка: feat/tc-05-sorting

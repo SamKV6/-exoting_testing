@@ -2,53 +2,64 @@
 // TC-01 · БАННЕР
 // ================================================================
 export const banner = {
-  // TODO: участник TC-01 заполняет селекторы
+  root: '#pe-relocation-banner',
+  link: '#pe-relocation-banner a',
+  text: /МЫ ПЕРЕЕХАЛИ И УЖЕ ОТКРЫТЫ/i,
 };
-
 // ================================================================
 // TC-02 · ШАПКА САЙТА
 // ================================================================
 export const header = {
-  // TODO: участник TC-02 заполняет селекторы
+  topMenuLink: (name: string) => `.top-menu__link:has-text("${name}")`,
+  phone: '.callback-info__main-num-text',
+  consultBtn: 'a[href="https://taplink.cc/planetexotic"]',
+  social: (name: 'VK' | 'YouTube' | 'Telegram') => {
+    const map: Record<string, string> = {
+      VK: '.soc-btn_vk',
+      YouTube: '.soc-btn_ytb',
+      Telegram: '.soc-btn_tlg'
+    };
+    return map[name];
+  },
 };
+
 
 // ================================================================
 // TC-03 · ПОИСК
 // ================================================================
 export const search = {
-  // TODO: участник TC-03 заполняет селекторы
+  input: '.site-search__input',
+  suggestions: '.autocomplete-suggestions',
+  suggestionItem: '.autocomplete-suggestion',
+  emptyState: /ничего не найдено|нет результатов/i,
 };
 
 // ================================================================
 // TC-04 · КОРЗИНА И ИЗБРАННОЕ
 // ================================================================
 export const cart = {
-  // TODO: участник TC-04 заполняет селекторы
+  counter: '.js-minicart-count',
+  icon: '.site-actions__btn_cart a',
+  addBtn: '.btn:has-text("В корзину")',
 };
 
 export const favorites = {
-  // TODO: участник TC-04 заполняет селекторы
+  counter: '.js-wishlist-count',
+  heartBtn: '.btn-fav',
+  heartActiveClass: /active|selected|in-fav/,
 };
 
 // ================================================================
 // TC-05 · СОРТИРОВКА
 // ================================================================
-export const sorting = {
-  // TODO: участник TC-05 заполняет селекторы
-};
+
 
 // ================================================================
 // TC-06 · КАРТОЧКА ТОВАРА
 // ================================================================
-export const product = {
-  // TODO: участник TC-06 заполняет селекторы
-};
+
 
 // ================================================================
-// TC-07 · ВИДЖЕТ ЧАТА
-// ================================================================
-export const chat = {
-  // TODO: участник TC-07 заполняет селекторы
 // TC-07 · ВИДЖЕТ ЧАТА
 // ================================================================
 export const chat = {
@@ -59,4 +70,4 @@ export const chat = {
   submitBtn: 'button:has-text("Отправить")',
   consentCheckbox: 'input[type="checkbox"]',
 };
-};
+
