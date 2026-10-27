@@ -49,4 +49,14 @@ export const product = {
 // ================================================================
 export const chat = {
   // TODO: участник TC-07 заполняет селекторы
+// TC-07 · ВИДЖЕТ ЧАТА
+// ================================================================
+export const chat = {
+  fab: '.js-fab__btn',
+  telegramLink: 'a[href*="t.me"]',
+  maxLink: 'a[href*="max.ru"]',
+  callbackBtn: '#call-back-button',
+  submitBtn: 'button:has-text("Отправить")',
+  consentCheckbox: 'input[type="checkbox"]',
+};
 };
